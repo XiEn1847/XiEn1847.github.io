@@ -41,8 +41,8 @@ fun fact: 图片出处是 lovelive sunshine episode3 9:43 处<br/><br/><br/>
 <br/><br/>
 
 请设置两帧的间隔（现在是 <span id="speedviewer">45</span>ms）:
-<input type="text" id="framespd" placeholder="45" type="number" min="1"/>
-<button type="button" id="submitframespd">更新</button>
+<input type="number" id="framespd" placeholder="45" min="1"/>
+<button type="button" onclick="updFrameSpd()">更新</button>
 <br/><br/>
 
 
@@ -192,13 +192,9 @@ function contentLoaded() {
 window.addEventListener("DOMContentLoaded", contentLoaded, false);
 
 function updFrameSpd() {
-	delay = document.getElementById('speedviewer').innerHTML;
+	delay = document.getElementById('framespd').value;
 	document.getElementById('speedviewer').innerHTML = delay;
 }
-
-document.getElementById("submitframespd").addEventListener("click", () => {
-	updFrameSpd();
-});
 
 </script>
 </body>
