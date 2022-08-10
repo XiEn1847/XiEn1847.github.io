@@ -13,8 +13,11 @@
 
 
 请选取一个图像文件: <input type="file" id="fileupl" name="fileupl"/>
+<br/>
 <div id="uplresult"></div>
+<br/>
 <button type="button" id="genGIF" disabled=true>生成 GIF</button>
+<br/>
 <img class="result-gif" width="667" height="375" src="" alt="">
 
 <script type="text/javascript">
@@ -142,6 +145,7 @@ function ProcessFile(e) {
 			uplimg = event.target.result;
 			var img = document.createElement("img");
 			img.src = uplimg;//将图片base64字符串赋值给img的src
+			img.height = "200px";
 			document.getElementById("uplresult").appendChild(img);
 			document.getElementById("genGIF").disabled = false;
 		};
