@@ -145,7 +145,7 @@ function ProcessFile(e) {
 			uplimg = event.target.result;
 			var img = document.createElement("img");
 			img.src = uplimg;//将图片base64字符串赋值给img的src
-			img.height = "200px";
+			img.height = 200;
 			document.getElementById("uplresult").appendChild(img);
 			document.getElementById("genGIF").disabled = false;
 		};
