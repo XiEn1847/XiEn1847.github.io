@@ -10,32 +10,32 @@
 </head>
 <body>
 
-<div id="box"></div>
-  
-<script>
-var box=document.getElementById('box');
-box.ondragover=function (e){
-	e.preventDefault();
-}
-box.ondrop=function (e){
-	e.preventDefault();
-	// console.log(e.dataTransfer.files[0]);
-	var f=e.dataTransfer.files[0];//获取到第一个上传的文件对象
-	var fr=new FileReader();//实例FileReader对象
-	fr.readAsDataURL(f);//把上传的文件对象转换成url
-	fr.onload=function (e){
-		console.log(e);
-		// var Url=e.target.result;//上传文件的URL
-		var Url=this.result;//上传文件的URL
-		box.innerHTML+='<img src="'+Url+'" alt="">';
-	}
-}
-</script>
+
+<input type="file" id="files" style="display:none" onchange="fileimport();"/>
+<input type="button" id="import" value="导入"/>
+<input type="button" id="export" value="导出"/>
+
+
 
 <button type="button" class="btn">生成 GIF</button>
 <img class="result-gif" width="667" height="375" src="" alt="">
 <script type="text/javascript">
 
+var txtdata;
+function fileimport(){
+	var selectedFile = document.getElementById("files").files[0];//获取读取的File对象
+	console.log(selectedFile.length);
+	var name = selectedFile.name;//读取选中文件的文件名
+	var size = selectedFile.size;//读取选中文件的大小
+	console.log("文件名:"+name+"大小："+size);
+	var reader = new FileReader();//这里是核心！！！读取操作就是由它完成的。
+	reader.readAsText(selectedFile,'gb2312');//读取文件的内容，注意编码方式
+	reader.onload = function(){
+		console.log(this.result);//当读取完成之后会回调这个函数，然后此时文件的内容存储到了result中。直接操作即可。
+		$('<pre>' + this.result + '</pre>').appendTo('body');
+		txtdata = this.result;
+	};
+}
 
 let imgSore = {num: 0};
 let imgNum = 0;
@@ -47,13 +47,13 @@ const delay = 45;
 
 function initImg(name) {
 	return new Promise(resolve => {
-		let image = new Image();
+		let img = new Image();
 
-		// image.setAttribute('crossOrigin', '');
-		image.onload = image.onerror = () => {
-			resolve(image);
+		img.setAttribute("crossOrigin", "anonymous");
+		img.onload = img.onerror = () => {
+			resolve(img);
 		};
-		image.src = name;
+		img.src = name;
 		// cdn later
 
 	})
@@ -89,12 +89,12 @@ function createImgRoll(len) {
 
 function drawTrapezoidV(ctx, img, x, y, w, h, factor) {
 	var idx = 0, scale = img.width / w;
-    for(; idx < w; idx++) {
+	for(; idx < w; idx++) {
 		ctx.drawImage(img, ((idx + 0.5) * scale - 0.5)|0, 0,
-        				1, img.height,
+						1, img.height,
 						x + idx, y + (1 - ((w - idx) + idx * factor) / w) * h / 2,
 						1, ((w - idx) + idx * factor) / w * h);
-    //	ctx.drawimage(img, 0, 0, img.width, img.height,x, y, w, h);
+	//	ctx.drawimage(img, 0, 0, img.width, img.height,x, y, w, h);
 	}
 }
 
