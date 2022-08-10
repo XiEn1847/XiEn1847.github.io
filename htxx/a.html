@@ -12,7 +12,7 @@
 
 
 
-请选取一个图像文件: <input type="fileupl" id="fileupl" name="fileupl"/>
+请选取一个图像文件: <input type="file" id="fileupl" name="fileupl"/>
 <div id="uplresult"></div>
 <button type="button" id="genGIF" disabled=true>生成 GIF</button>
 <img class="result-gif" width="667" height="375" src="" alt="">
@@ -135,8 +135,8 @@ document.getElementById("genGIF").addEventListener("click", () => {
 });
 
 function ProcessFile(e) {
-	var fileupl = document.getElementById('fileupl').files[0];
-	if (fileupl) {
+	var ufile = document.getElementById('fileupl').files[0];
+	if (ufile) {
 		var reader = new FileReader();
 		reader.onload = function (event) {
 			uplimg = event.target.result;
@@ -146,7 +146,7 @@ function ProcessFile(e) {
 			document.getElementById("genGIF").disabled = false;
 		};
 	}
-	reader.readAsDataURL(fileupl);
+	reader.readAsDataURL(ufile);
 }
 
 function contentLoaded() {
