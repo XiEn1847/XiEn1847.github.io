@@ -115,10 +115,8 @@ function createGif() {
 	canvas.height = h;
 	let ctx = canvas.getContext('2d');
 
-	let upimg = new Image();
-	upimg.src = "/qwq1.png";
-//	let upimg = initImg();
-//	Promise.resolve(upimg).then(res => {var upimg1 = res});
+//	let upimg = new Image();
+//	upimg.src = "/qwq1.png";
 
 	Promise.all(imgarray).then(value => {
 		value.forEach((value1, index) => {
@@ -127,7 +125,7 @@ function createGif() {
 			ctx.clearRect(0, 0, w, h);
 			ctx.setTransform(1, 0.21, 0, 1, 50, -40);
 			
-			drawTrapezoidV(ctx, upimg, 0, 0, 236, 334, 0.81);
+		//	drawTrapezoidV(ctx, upimg, 0, 0, 236, 334, 0.81);
 			
 			ctx.setTransform(1, 0, 0, 1, 0, 0);
 			ctx.drawImage(value1, 0, 0);
