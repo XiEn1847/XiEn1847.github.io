@@ -30,7 +30,7 @@ function initImg(name) {
 		image.onload = image.onerror = () => {
 			resolve(image);
 		};
-		image.src = "/images/pray/" + name + ".png";
+		image.src = name;
 		// cdn later
 
 	})
@@ -42,7 +42,7 @@ function createImg(len) {
 
 	let imgarray = [];
 	for (let i = 1; i <= len; i++) {
-		imgarray.push(initImg(i));
+		imgarray.push(initImg("/images/pray/" + i + ".png"));
 	}
 	return imgarray;
 }
@@ -53,17 +53,33 @@ function createImgRoll(len) {
 
 	let imgarray = [];
 	for (let i = 1; i <= len; i++) {
-		imgarray.push(initImg(i));
+		imgarray.push(initImg("/images/pray/" + i + ".png"));
 	}
 	for (let i = 1; i < len - 2; i++) {
-		imgarray.push(initImg(len - i));
+		imgarray.push(initImg("/images/pray/" + (len - i) + ".png"));
 	}
 	return imgarray;
 }
 
 
+
+
+function drawTrapezoidV(ctx, img, x, y, w, h, factor) {
+	var idx = 0, scale = img.width / w;
+    for(; idx < w; idx++) {
+		ctx.drawImage(img, ((idx + 0.5) * scale - 0.5)|0, 0,
+        				1, img.height,
+						x + idx, y + (1 - ((w - idx) + idx * factor) / w) * h / 2,
+						1, ((w - idx) + idx * factor) / w * h);
+    //	ctx.drawimage(img, 0, 0, img.width, img.height,x, y, w, h);
+	}
+}
+
+
+
 function createGif() {
-	let imgarray = createImgRoll(8);
+	let imgarray = createImgRoll(9);
+	let upimg = initImg("/qwq1.png");
 	let praygif = new GIF({
 							width: w,
 							height: h,
@@ -71,28 +87,33 @@ function createGif() {
 							quality: 10,
 							workerScript: '/gifjs/gif.worker.js'
 						});
-	// 画布元素
+
 	let canvas = document.createElement('canvas');
 
 	canvas.width = w;
 	canvas.height = h;
-	let context = canvas.getContext('2d');
+	let ctx = canvas.getContext('2d');
 	Promise.all(imgarray).then(value => {
 		value.forEach((value1, index) => {
 
-			//绘制图片 imgSore
-			context.clearRect(0, 0, w, h);
-			context.drawImage(value1, 0, 0);
+			// draw
+			ctx.clearRect(0, 0, w, h);
+			ctx.drawImage(value1, 0, 0);
+			ctx.clearRect(0, 0, 667, 375);
+			ctx.setTransform(1, 0.21, 0, 1, 50, -40);
+			drawTrapezoidV(ctx, upimg, 0, 0, 236, 334, 0.81);
+			ctx.setTransform(1, 0, 0, 1, 0, 0);
+			ctx.drawImage(value1, 0, 0);
 
-			//作为帧插入GIF
-			praygif.addFrame(context, {
+			// insert as frame
+			praygif.addFrame(ctx, {
 				delay: delay,
 				copy: true
 			});
 		});
 
 		praygif.on('finished', function (blob) {
-			// 这里的blob就是gif图片blod格式信息
+
 			console.log(blob);
 			// window.open(URL.createObjectURL(blob));
 			document.querySelector(".result-gif").src = URL.createObjectURL(blob);
