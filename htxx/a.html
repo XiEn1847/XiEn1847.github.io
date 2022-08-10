@@ -12,34 +12,16 @@
 
 
 
-请选取一个图像文件: <input type="file" id="file" name="file"/>
+请选取一个图像文件: <input type="fileupl" id="fileupl" name="fileupl"/>
 <div id="uplresult"></div>
-<button type="button" id="genGIF">生成 GIF</button>
+<button type="button" id="genGIF" disabled=true>生成 GIF</button>
 <img class="result-gif" width="667" height="375" src="" alt="">
 
 <script type="text/javascript">
 
-function ProcessFile(e) {
-	var file = document.getElementById('file').files[0];
-	if (file) {
-		var reader = new FileReader();
-		reader.onload = function (event) {
-			var txt = event.target.result;
-			var img = document.createElement("img");
-			img.src = txt;//将图片base64字符串赋值给img的src
-			document.getElementById("uplresult").appendChild(img);
-		//	document.getElementById("genGIF").disabled = false;
-		};
-	}
-	reader.readAsDataURL(file);
-}
-function contentLoaded() {
-	document.getElementById('file').addEventListener('change', ProcessFile, false);
-}
+var uplimg;
 
 
-let imgSore = {num: 0};
-let imgNum = 0;
 
 const w = 667;
 const h = 375;
@@ -116,8 +98,8 @@ function createGif() {
 	canvas.height = h;
 	let ctx = canvas.getContext('2d');
 
-//	let upimg = new Image();
-//	upimg.src = "/qwq1.png";
+	let upimg = new Image();
+	upimg.src = uplimg;
 
 	Promise.all(imgarray).then(value => {
 		value.forEach((value1, index) => {
@@ -126,7 +108,7 @@ function createGif() {
 			ctx.clearRect(0, 0, w, h);
 			ctx.setTransform(1, 0.21, 0, 1, 50, -40);
 			
-		//	drawTrapezoidV(ctx, upimg, 0, 0, 236, 334, 0.81);
+			drawTrapezoidV(ctx, upimg, 0, 0, 236, 334, 0.81);
 			
 			ctx.setTransform(1, 0, 0, 1, 0, 0);
 			ctx.drawImage(value1, 0, 0);
@@ -152,6 +134,25 @@ document.getElementById("genGIF").addEventListener("click", () => {
 	createGif();
 });
 
+function ProcessFile(e) {
+	var fileupl = document.getElementById('fileupl').files[0];
+	if (fileupl) {
+		var reader = new FileReader();
+		reader.onload = function (event) {
+			uplimg = event.target.result;
+			var img = document.createElement("img");
+			img.src = uplimg;//将图片base64字符串赋值给img的src
+			document.getElementById("uplresult").appendChild(img);
+			document.getElementById("genGIF").disabled = false;
+		};
+	}
+	reader.readAsDataURL(fileupl);
+}
+
+function contentLoaded() {
+	document.getElementById('fileupl').addEventListener('change', ProcessFile, false);
+}
+window.addEventListener("DOMContentLoaded", contentLoaded, false);
 
 </script>
 </body>
