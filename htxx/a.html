@@ -60,11 +60,10 @@ function createGif() {
   Promise.all(IMG_ARR).then(value => {
     value.forEach((value1, index) => {
 
-      // // 绘制图片 imgSore
-      context.clearRect(0, 0, w, h);
-      context.drawImage(value1, 0, 0);
-// // // 绘制文字
-      context.fillStyle = "#fff
+// // 绘制图片 imgSore
+    context.clearRect(0, 0, w, h);
+    context.drawImage(value1, 0, 0);
+
 
 // // 作为帧插入GIF
       praygif.addFrame(context, {
