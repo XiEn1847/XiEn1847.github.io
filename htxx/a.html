@@ -14,7 +14,7 @@
 
 请选取一个图像文件: <input type="file" id="file" name="file"/>
 <div id="uplresult"></div>
-<button type="button" id="genGIF" disabled=true>生成 GIF</button>
+<button type="button" id="genGIF">生成 GIF</button>
 <img class="result-gif" width="667" height="375" src="" alt="">
 
 <script type="text/javascript">
@@ -28,7 +28,7 @@ function ProcessFile(e) {
 			var img = document.createElement("img");
 			img.src = txt;//将图片base64字符串赋值给img的src
 			document.getElementById("uplresult").appendChild(img);
-			document.getElementById("genGIF").disabled = false;
+		//	document.getElementById("genGIF").disabled = false;
 		};
 	}
 	reader.readAsDataURL(file);
@@ -148,7 +148,7 @@ function createGif() {
 	});
 }
 
-document.querySelector(".btn").addEventListener("click", () => {
+document.getElementById("genGIF").addEventListener("click", () => {
 	createGif();
 });
 
