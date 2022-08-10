@@ -29,8 +29,6 @@ function initImg(len) {
       resolve(image);
     };
     image.src = "/images/pray/" + len + ".png";
-    alert("image.src = " + image.src);
-    
     // cdn later
 
   })
@@ -46,7 +44,7 @@ function createImg(len) {
 
 function createGif() {
   let IMG_ARR = createImg(8);
-  let gif = new GIF({
+  let praygif = new GIF({
                       width: w,
                       height: h,
                       workers: 2,
@@ -55,53 +53,37 @@ function createGif() {
                     });
   // 画布元素
   let canvas = document.createElement('canvas');
-  const msg = [
-        "好啊",
-        "就算你是一流工程师",
-        "就算你出报告再完美",
-        "我叫你改报告你就要改",
-        "毕竟我是客户",
-        "客户了不起啊",
-        "Sorry 客户真的了不起",
-        "",
-      ]
-  ;
-  alert("line 69");
+
   canvas.width = w;
   canvas.height = h;
   let context = canvas.getContext('2d');
   Promise.all(IMG_ARR).then(value => {
-    console.log(value);
     value.forEach((value1, index) => {
+
       // // 绘制图片 imgSore
       context.clearRect(0, 0, w, h);
       context.drawImage(value1, 0, 0);
 // // // 绘制文字
+      context.fillStyle = "#fff
 
-      context.fillStyle = "#fff";
-      console.log(context);
-      if (msg[index]) {
-        context.fillText(msg[index], w / 2, h - 20);
-      }
 // // 作为帧插入GIF
-
-      gif.addFrame(context, {
+      praygif.addFrame(context, {
         delay: delay,
         copy: true
       });
     });
-    gif.on('finished', function (blob) {
+
+    praygif.on('finished', function (blob) {
       // 这里的blob就是gif图片blod格式信息
       console.log(blob);
       // window.open(URL.createObjectURL(blob));
       document.querySelector(".result-gif").src = URL.createObjectURL(blob);
     });
-    gif.render();
+    praygif.render();
   });
 }
 
 document.querySelector(".btn").addEventListener("click", () => {
-  alert("msg");
   createGif();
 });
 
