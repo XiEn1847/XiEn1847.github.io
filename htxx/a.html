@@ -9,6 +9,29 @@
 	<script src="/gifjs/gif.js"></script>
 </head>
 <body>
+
+<div id="box"></div>
+  
+<script>
+var box=document.getElementById('box');
+box.ondragover=function (e){
+	e.preventDefault();
+}
+box.ondrop=function (e){
+	e.preventDefault();
+	// console.log(e.dataTransfer.files[0]);
+	var f=e.dataTransfer.files[0];//获取到第一个上传的文件对象
+	var fr=new FileReader();//实例FileReader对象
+	fr.readAsDataURL(f);//把上传的文件对象转换成url
+	fr.onload=function (e){
+		console.log(e);
+		// var Url=e.target.result;//上传文件的URL
+		var Url=this.result;//上传文件的URL
+		box.innerHTML+='<img src="'+Url+'" alt="">';
+	}
+}
+</script>
+
 <button type="button" class="btn">生成 GIF</button>
 <img class="result-gif" width="667" height="375" src="" alt="">
 <script type="text/javascript">
@@ -79,7 +102,6 @@ function drawTrapezoidV(ctx, img, x, y, w, h, factor) {
 
 function createGif() {
 	let imgarray = createImgRoll(8);
-	let upimg = initImg("/qwq1.png");
 	let praygif = new GIF({
 							width: w,
 							height: h,
@@ -89,31 +111,35 @@ function createGif() {
 						});
 
 	let canvas = document.createElement('canvas');
-
 	canvas.width = w;
 	canvas.height = h;
 	let ctx = canvas.getContext('2d');
-	Promise.resolve(upimg).then(upimg1 => {
-		Promise.all(imgarray).then(value => {
-			value.forEach((value1, index) => {
+
+	let upimg = new Image();
+	upimg.src = "/qwq1.png";
+//	let upimg = initImg();
+//	Promise.resolve(upimg).then(res => {var upimg1 = res});
+
+	Promise.all(imgarray).then(value => {
+		value.forEach((value1, index) => {
 	
-				// draw
-				ctx.clearRect(0, 0, w, h);
-				ctx.setTransform(1, 0.21, 0, 1, 50, -40);
-				
-					drawTrapezoidV(ctx, upimg1, 0, 0, 236, 334, 0.81);
-				
-				ctx.setTransform(1, 0, 0, 1, 0, 0);
-				ctx.drawImage(value1, 0, 0);
+			// draw
+			ctx.clearRect(0, 0, w, h);
+			ctx.setTransform(1, 0.21, 0, 1, 50, -40);
+			
+			drawTrapezoidV(ctx, upimg, 0, 0, 236, 334, 0.81);
+			
+			ctx.setTransform(1, 0, 0, 1, 0, 0);
+			ctx.drawImage(value1, 0, 0);
 	
-				// insert as frame
-				praygif.addFrame(ctx, {
-					delay: delay,
-					copy: true
-				});
+			// insert as frame
+			praygif.addFrame(ctx, {
+				delay: delay,
+				copy: true
 			});
 		});
 	});
+	
 	praygif.on('finished', function (blob) {
 
 		console.log(blob);
