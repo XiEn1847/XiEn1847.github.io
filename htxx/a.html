@@ -191,8 +191,10 @@ function contentLoaded() {
 window.addEventListener("DOMContentLoaded", contentLoaded, false);
 
 function updFrameSpd() {
-	delay = document.getElementById('framespd').value;
-	document.getElementById('speedviewer').innerHTML = delay;
+	if (document.getElementById('framespd').value >= 1 && document.getElementById('framespd').value <= 1000) {
+		delay = document.getElementById('framespd').value;
+		document.getElementById('speedviewer').innerHTML = delay;
+	}
 }
 
 </script>
