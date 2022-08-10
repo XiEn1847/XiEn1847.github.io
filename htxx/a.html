@@ -136,15 +136,15 @@ function createGif() {
 				copy: true
 			});
 		});
-	});
-	
-	praygif.on('finished', function (blob) {
 
-		console.log(blob);
-		// window.open(URL.createObjectURL(blob));
-		document.querySelector(".result-gif").src = URL.createObjectURL(blob);
+		praygif.on('finished', function (blob) {
+	
+			console.log(blob);
+			// window.open(URL.createObjectURL(blob));
+			document.querySelector(".result-gif").src = URL.createObjectURL(blob);
+		});
+		praygif.render();
 	});
-	praygif.render();
 }
 
 document.querySelector(".btn").addEventListener("click", () => {
