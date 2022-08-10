@@ -101,7 +101,9 @@ function createGif() {
 			ctx.drawImage(value1, 0, 0);
 			ctx.clearRect(0, 0, 667, 375);
 			ctx.setTransform(1, 0.21, 0, 1, 50, -40);
-			drawTrapezoidV(ctx, upimg, 0, 0, 236, 334, 0.81);
+			Promise.resolve(upimg).then(upimg1 => {
+				drawTrapezoidV(ctx, upimg1, 0, 0, 236, 334, 0.81);
+			});
 			ctx.setTransform(1, 0, 0, 1, 0, 0);
 			ctx.drawImage(value1, 0, 0);
 
