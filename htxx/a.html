@@ -1,89 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>gif js</title>
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <script src="/gifjs/gif.js"></script>
+	<meta charset="UTF-8">
+	<title>sto xx orz</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<script src="/gifjs/gif.js"></script>
 </head>
 <body>
 <button type="button" class="btn">生成 GIF</button>
 <img class="result-gif" width="667" height="375" src="" alt="">
 <script type="text/javascript">
 
+
 let imgSore = {num: 0};
 let imgNum = 0;
 const srcRoot = "images/";
 const w = 667;
 const h = 375;
-const delay = 120;
+const delay = 75;
 
-function initImg(len) {
-  return new Promise(resolve => {
-    let image = new Image();
 
-    image.setAttribute('crossOrigin', '');
-    image.onload = image.onerror = () => {
-      resolve(image);
-    };
-    image.src = "/images/pray/" + len + ".png";
-    // cdn later
+function initImg(name) {
+	return new Promise(resolve => {
+		let image = new Image();
 
-  })
+		// image.setAttribute('crossOrigin', '');
+		image.onload = image.onerror = () => {
+			resolve(image);
+		};
+		image.src = "/images/pray/" + name + ".png";
+		// cdn later
+
+	})
 }
+
 
 function createImg(len) {
-  let STORE = [];
-  for (let i = 1; i <= len; i++) {
-    STORE.push(initImg(i));
-  }
-  return STORE;
+	// e.g. name = "2.png"
+
+	let imgarray = [];
+	for (let i = 1; i <= len; i++) {
+		imgarray.push(initImg(i));
+	}
+	return imgarray;
 }
 
+
+function createImgRoll(len) {
+	// e.g. name = "2.png"
+
+	let imgarray = [];
+	for (let i = 1; i <= len; i++) {
+		imgarray.push(initImg(i));
+	}
+	for (let i = 1; i < len - 2; i++) {
+		imgarray.push(initImg(len - i));
+	}
+	return imgarray;
+}
+
+
 function createGif() {
-  let IMG_ARR = createImg(8);
-  let praygif = new GIF({
-                      width: w,
-                      height: h,
-                      workers: 2,
-                      quality: 10,
-                      workerScript: '/gifjs/gif.worker.js'
-                    });
-  // 画布元素
-  let canvas = document.createElement('canvas');
+	let imgarray = createImgRoll(8);
+	let praygif = new GIF({
+							width: w,
+							height: h,
+							workers: 2,
+							quality: 10,
+							workerScript: '/gifjs/gif.worker.js'
+						});
+	// 画布元素
+	let canvas = document.createElement('canvas');
 
-  canvas.width = w;
-  canvas.height = h;
-  let context = canvas.getContext('2d');
-  Promise.all(IMG_ARR).then(value => {
-    value.forEach((value1, index) => {
+	canvas.width = w;
+	canvas.height = h;
+	let context = canvas.getContext('2d');
+	Promise.all(imgarray).then(value => {
+		value.forEach((value1, index) => {
 
-// // 绘制图片 imgSore
-    context.clearRect(0, 0, w, h);
-    context.drawImage(value1, 0, 0);
+			//绘制图片 imgSore
+			context.clearRect(0, 0, w, h);
+			context.drawImage(value1, 0, 0);
 
+			//作为帧插入GIF
+			praygif.addFrame(context, {
+				delay: delay,
+				copy: true
+			});
+		});
 
-// // 作为帧插入GIF
-      praygif.addFrame(context, {
-        delay: delay,
-        copy: true
-      });
-    });
-
-    praygif.on('finished', function (blob) {
-      // 这里的blob就是gif图片blod格式信息
-      console.log(blob);
-      // window.open(URL.createObjectURL(blob));
-      document.querySelector(".result-gif").src = URL.createObjectURL(blob);
-    });
-    praygif.render();
-  });
+		praygif.on('finished', function (blob) {
+			// 这里的blob就是gif图片blod格式信息
+			console.log(blob);
+			// window.open(URL.createObjectURL(blob));
+			document.querySelector(".result-gif").src = URL.createObjectURL(blob);
+		});
+		praygif.render();
+	});
 }
 
 document.querySelector(".btn").addEventListener("click", () => {
-  createGif();
+	createGif();
 });
 
 
