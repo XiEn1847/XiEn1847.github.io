@@ -18,7 +18,7 @@
 
 缝合了一整天代码整出来的奇怪小玩意<br/>
 使用方法：先上传文件，然后点生成GIF，稍等片刻<br/>
-如果图片经过 1min 以上还是没加载出来，可以尝试换个图片源：<a href="https://xien1847.github.io/htxx/a.html">jsdelivr</a> <a href="https://xien1847.github.io/htxx/a_cn.html">cnblogs</a><br/>
+如果图片经过 1min 以上还是没加载出来，可以尝试换个图片源：<a href="https://xien1847.github.io/htxx/a.html">jsdelivr</a> <a href="https://xien1847.github.io/htxx/a_cn.html">Luogu</a><br/>
 参考的各种内容: 
 <a href="https://yandex.com/search/?text=love+live+superstar+episode+3+no+subtitles&lr=200&src=suggest_Nin">#</a>
 <a href="https://zh.clippingmagic.com">#</a>
@@ -44,6 +44,14 @@ fun fact: 图片出处是 lovelive sunshine episode3 9:43 处<br/>
 <button type="button" onclick="updFrameSpd()">更新</button>
 <br/>
 
+请设置图片源（如果加载不出来请换一个）
+<select onChange="changeImgOrigin(this.selectedIndex);">
+<option >luogu</option>
+<option >github</option>
+<option selected="selected">jsdelivr</option>
+</select>
+
+<br/>
 
 <button type="button" id="genGIF" disabled=true>生成 GIF</button>
 <br/>
@@ -54,9 +62,7 @@ fun fact: 图片出处是 lovelive sunshine episode3 9:43 处<br/>
 <script type="text/javascript">
 
 var uplimg;
-
-
-
+var imgsrc = 2;
 const w = 667;
 const h = 375;
 var delay = 45;
@@ -88,46 +94,52 @@ function createImg(len) {
 }*/
 
 
-function createImgRoll(len) {
+function createImgRoll(src) {
 	// e.g. name = "2.png"
 
 	let imgarray = [];
-	for (let i = 1; i <= len; i++) {
-		imgarray.push(initImg("https://gcore.jsdelivr.net/gh/XiEn1847/XiEn1847.github.io/images/pray/" + i + ".png"));
-	}
-	for (let i = 1; i < len - 2; i++) {
-		imgarray.push(initImg("https://gcore.jsdelivr.net/gh/XiEn1847/XiEn1847.github.io/images/pray/" + (len - i) + ".png"));
+	if (src == 2) {
+		for (let i = 1; i <= 8; i++) {
+			imgarray.push(initImg("https://gcore.jsdelivr.net/gh/XiEn1847/XiEn1847.github.io/images/pray/" + i + ".png"));
+		}
+		for (let i = 6; i >= 2; i--) {
+			imgarray.push(initImg("https://gcore.jsdelivr.net/gh/XiEn1847/XiEn1847.github.io/images/pray/" + i + ".png"));
+		}
+	} else if (src == 1) {
+		for (let i = 1; i <= 8; i++) {
+			imgarray.push(initImg("https://XiEn1847.github.io/images/pray/" + i + ".png"));
+		}
+		for (let i = 6; i >= 2; i--) {
+			imgarray.push(initImg("https://XiEn1847.github.io/images/pray/" + i + ".png"));
+		}
+	} else if (src == 0) {
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/ffxggnnh.png"));	//1
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/odj4jl2r.png"));	//2
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/5780sxer.png"));	//3
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/nv3f0u9v.png"));	//4
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/5d4vsyf8.png"));	//5
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/bmohioy4.png"));	//6
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/l3dpfxv4.png"));	//7
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/ixjzd5yu.png"));	//8
+		
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/l3dpfxv4.png"));	//7
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/bmohioy4.png"));	//6
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/5d4vsyf8.png"));	//5
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/nv3f0u9v.png"));	//4
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/5780sxer.png"));	//3
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/odj4jl2r.png"));	//2
+		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/ffxggnnh.png"));	//1
 	}
 	return imgarray;
 }
 
-function createImgRollCn(len) {
-	let imgarray = [];
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091123638-1088609865.png"));	//1
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091127729-245676596.png"));	//2
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091134776-566289898.png"));	//3
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091137565-1842241619.png"));	//4
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091154006-8221406.png"));	//5
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091156659-1533766408.png"));	//6
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091159371-773805500.png"));	//7
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091202737-331943017.png"));	//8
-	
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091159371-773805500.png"));	//7
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091156659-1533766408.png"));	//6
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091154006-8221406.png"));	//5
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091137565-1842241619.png"));	//4
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091134776-566289898.png"));	//3
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091127729-245676596.png"));	//2
-	imgarray.push(initImg("https://img2022.cnblogs.com/blog/2336113/202208/2336113-20220811091123638-1088609865.png"));	//1
-	return imgarray;
-}
 
 
 
 
 function drawTrapezoidV(ctx, img, x, y, w, h, factor) {
 	var idx = 0, scale = img.width / w;
-	for(; idx < w; idx++) {
+	for (; idx < w; idx++) {
 		ctx.drawImage(img, ((idx + 0.5) * scale - 0.5)|0, 0,
 						1, img.height,
 						x + idx, y + (1 - ((w - idx) + idx * factor) / w) * h / 2,
@@ -139,8 +151,7 @@ function drawTrapezoidV(ctx, img, x, y, w, h, factor) {
 
 
 function createGif() {
-	let imgarray = createImgRoll(8);
-//	let imgarray = createImgRollCn(8);
+	let imgarray = createImgRoll(imgsrc);
 	let praygif = new GIF({
 							width: w,
 							height: h,
@@ -216,6 +227,12 @@ function updFrameSpd() {
 	if (document.getElementById('framespd').value >= 1 && document.getElementById('framespd').value <= 1000) {
 		delay = document.getElementById('framespd').value;
 		document.getElementById('speedviewer').innerHTML = delay;
+	}
+}
+
+function changeImgOrigin(new_id) {
+	if (new_id == 0 || new_id == 1 || new_id == 2) {
+		imgsrc = new_id;
 	}
 }
 
