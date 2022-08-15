@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -17,14 +17,14 @@
 缝合了一整天代码整出来的奇怪小玩意<br/>
 使用方法：先上传文件，然后点生成 GIF，稍等片刻（预计 5~20s）<br/>
 参考的各种内容: 
-<a href="https://yandex.com/search/?text=love+live+superstar+episode+3+no+subtitles&lr=200&src=suggest_Nin">#</a>
-<a href="https://zh.clippingmagic.com">#</a>
-<a href="https://www.zhangxinxu.com/wordpress/2018/05/js-custom-gif-generate/">#</a>
-<a href="https://www.w3school.com.cn/tiy/t.asp?f=eg_html5_canvas_transform">#</a>
-<a href="https://stackoverflow.com/questions/23624269/how-to-draw-an-image-in-trapezium-shape-using-canvas">#</a>
-<a href="https://www.runoob.com/w3cnote/javascript-promise-object.html">#</a>
-<a href="https://blog.csdn.net/sinat_31057219/article/details/70242265">#</a>
-<a href="https://docs.fuyeor.com/answer/10090.html">#</a><br/>
+<a href="https://yandex.com/search/?text=love+live+superstar+episode+3+no+subtitles&lr=200&src=suggest_Nin">A</a>
+<a href="https://zh.clippingmagic.com">B</a>
+<a href="https://www.zhangxinxu.com/wordpress/2018/05/js-custom-gif-generate/">C</a>
+<a href="https://www.w3school.com.cn/tiy/t.asp?f=eg_html5_canvas_transform">D</a>
+<a href="https://stackoverflow.com/questions/23624269/how-to-draw-an-image-in-trapezium-shape-using-canvas">E</a>
+<a href="https://www.runoob.com/w3cnote/javascript-promise-object.html">F</a>
+<a href="https://blog.csdn.net/sinat_31057219/article/details/70242265">G</a>
+<a href="https://docs.fuyeor.com/answer/10090.html">H</a><br/>
 fun fact: 图片出处是 lovelive sunshine episode3 9:43 处<br/>
 帧间距小于 20ms 时好像并不能正常生成非常快的 gif，我也不知道为什么<br/>
 
@@ -57,7 +57,7 @@ fun fact: 图片出处是 lovelive sunshine episode3 9:43 处<br/>
 
 <script type="text/javascript">
 
-var uplimg;
+var imgb64;
 var imgsrc = 2;
 const w = 667;
 const h = 375;
@@ -67,86 +67,43 @@ var delay = 45;
 function initImg(name) {
 	return new Promise(resolve => {
 		let img = new Image();
-
 		img.setAttribute("crossOrigin", "anonymous");
-		img.onload = img.onerror = () => {
-			resolve(img);
-		};
+		img.onload = img.onerror = () => { resolve(img); };
 		img.src = name;
-		// cdn later
-
 	})
 }
 
-/*
-function createImg(len) {
-	// e.g. name = "2.png"
-
-	let imgarray = [];
-	for (let i = 1; i <= len; i++) {
-		imgarray.push(initImg("/images/pray/" + i + ".png"));
-	}
-	return imgarray;
-}*/
-
-
 function createImgRoll(src) {
-	// e.g. name = "2.png"
-
-	let imgarray = [];
+	let ret = [];
+	let name = ["", "", "", "", "", "", "", ""], preffix = "";
 	if (src == 2) {
-		for (let i = 1; i <= 8; i++) {
-			imgarray.push(initImg("https://gcore.jsdelivr.net/gh/XiEn1847/XiEn1847.github.io/images/pray/" + i + ".png"));
-		}
-		for (let i = 7; i >= 2; i--) {
-			imgarray.push(initImg("https://gcore.jsdelivr.net/gh/XiEn1847/XiEn1847.github.io/images/pray/" + i + ".png"));
-		}
+		name = ["1", "2", "3", "4", "5", "6", "7", "8"];
+		preffix = "https://gcore.jsdelivr.net/gh/XiEn1847/XiEn1847.github.io/images/pray/";
 	} else if (src == 1) {
-		for (let i = 1; i <= 8; i++) {
-			imgarray.push(initImg("https://XiEn1847.github.io/images/pray/" + i + ".png"));
-		}
-		for (let i = 7; i >= 2; i--) {
-			imgarray.push(initImg("https://XiEn1847.github.io/images/pray/" + i + ".png"));
-		}
+		name = ["1", "2", "3", "4", "5", "6", "7", "8"];
+		preffix = "https://XiEn1847.github.io/images/pray/";
 	} else if (src == 0) {
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/ffxggnnh.png"));	//1
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/odj4jl2r.png"));	//2
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/5780sxer.png"));	//3
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/nv3f0u9v.png"));	//4
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/5d4vsyf8.png"));	//5
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/bmohioy4.png"));	//6
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/l3dpfxv4.png"));	//7
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/ixjzd5yu.png"));	//8
-		
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/l3dpfxv4.png"));	//7
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/bmohioy4.png"));	//6
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/5d4vsyf8.png"));	//5
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/nv3f0u9v.png"));	//4
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/5780sxer.png"));	//3
-		imgarray.push(initImg("https://cdn.luogu.com.cn/upload/image_hosting/odj4jl2r.png"));	//2
+		name = ["ffxggnnh", "odj4jl2r", "5780sxer", "nv3f0u9v", "5d4vsyf8", "bmohioy4", "l3dpfxv4", "ixjzd5yu"];
+		preffix = "https://cdn.luogu.com.cn/upload/image_hosting/";
 	}
-	return imgarray;
+	for (let i = 0; i <= 7; i++) { ret.push(initImg(preffix + name[i] + ".png")); }
+	for (let i = 6; i >= 1; i--) { ret.push(initImg(preffix + name[i] + ".png")); }
+	return ret;
 }
-
-
-
 
 
 function drawTrapezoidV(ctx, img, x, y, w, h, factor) {
 	var idx = 0, scale = img.width / w;
 	for (; idx < w; idx++) {
-		ctx.drawImage(img, ((idx + 0.5) * scale - 0.5)|0, 0,
-						1, img.height,
+		ctx.drawImage(img, ((idx + 0.5) * scale - 0.5)|0, 0, 1, img.height,
 						x + idx, y + (1 - ((w - idx) + idx * factor) / w) * h / 2,
 						1, ((w - idx) + idx * factor) / w * h);
-	//	ctx.drawimage(img, 0, 0, img.width, img.height,x, y, w, h);
 	}
 }
 
 
-
 function createGif() {
-	let imgarray = createImgRoll(imgsrc);
+	let ret = createImgRoll(imgsrc);
 	let praygif = new GIF({
 							width: w,
 							height: h,
@@ -161,17 +118,15 @@ function createGif() {
 	let ctx = canvas.getContext('2d');
 
 	let upimg = new Image();
-	upimg.src = uplimg;
+	upimg.src = imgb64;
 
-	Promise.all(imgarray).then(value => {
+	Promise.all(ret).then(value => {
 		value.forEach((value1, index) => {
 	
 			// draw
 			ctx.clearRect(0, 0, w, h);
 			ctx.setTransform(1, 0.21, 0, 1, 50, -40);
-			
 			drawTrapezoidV(ctx, upimg, 0, 0, 236, 334, 0.81);
-			
 			ctx.setTransform(1, 0, 0, 1, 0, 0);
 			ctx.drawImage(value1, 0, 0);
 	
@@ -183,9 +138,7 @@ function createGif() {
 		});
 
 		praygif.on('finished', function (blob) {
-	
 			console.log(blob);
-			// window.open(URL.createObjectURL(blob));
 			document.querySelector(".result-gif").src = URL.createObjectURL(blob);
 		});
 		praygif.render();
@@ -202,9 +155,9 @@ function ProcessFile(e) {
 	if (ufile) {
 		var reader = new FileReader();
 		reader.onload = function (event) {
-			uplimg = event.target.result;
+			imgb64 = event.target.result;
 			var img = document.createElement("img");
-			img.src = uplimg;//将图片base64字符串赋值给img的src
+			img.src = imgb64;
 			img.height = 200;
 			document.getElementById("uplresult").appendChild(img);
 			document.getElementById("genGIF").disabled = false;
@@ -216,6 +169,7 @@ function ProcessFile(e) {
 function contentLoaded() {
 	document.getElementById('fileupl').addEventListener('change', ProcessFile, false);
 }
+
 window.addEventListener("DOMContentLoaded", contentLoaded, false);
 
 function updFrameSpd() {
